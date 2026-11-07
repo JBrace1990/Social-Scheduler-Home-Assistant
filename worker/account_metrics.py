@@ -397,15 +397,21 @@ def sync_facebook_account(conn, config, client, channel, now, budget, logger=Non
 
 
 def sync_demographics(conn, config, client, channel, now, budget, logger=None) -> dict:
-    """Audience breakdowns. One call per (audience, breakdown) pair — twelve on Instagram,
-    which is why this runs daily rather than every cycle.
+    """Audience breakdowns for Instagram and Threads.
+
+    One call per (audience, breakdown) pair — twelve on Instagram, which is why this runs
+    daily rather than every cycle. Facebook Pages do not use either of these platform
+    endpoints, so they must not fall through to the Threads insights edge.
 
     An empty result is a NORMAL state (Meta returns nothing below 100 followers), so it is
     recorded as "no buckets" rather than treated as a failure. The UI distinguishes the
     two by whether any row exists for that day.
     """
-    day, fetched_at = day_of(now), now.isoformat()
     platform = channel["platform"]
+    if platform not in {"instagram", "threads"}:
+        return {"buckets": 0}
+
+    day, fetched_at = day_of(now), now.isoformat()
     if platform == "instagram":
         pairs = [
             (metric, breakdown)
