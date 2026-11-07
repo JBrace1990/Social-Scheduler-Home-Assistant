@@ -37,9 +37,19 @@ export function ChannelCredentials({
     setTokenCheck(null);
     try {
       const res = await fetch(`/api/channels/${channelId}/test-token`, { method: "POST" });
-      const body = await res.json();
-      setTokenCheck(res.ok ? body : { valid: false, appId: null, message: body.error ?? "Could not test the token." });
-      if (res.ok && body.valid) router.refresh();
+      const body = await res.json().catch(() => null);
+      setTokenCheck(
+        res.ok && body
+          ? body
+          : {
+              valid: false,
+              appId: null,
+              message: body?.error ?? `Token check failed (HTTP ${res.status}). Try again or check the add-on log.`,
+            }
+      );
+      // The result is already displayed locally. router.refresh() asks Next to fetch an
+      // unprefixed RSC URL, which Home Assistant ingress cannot route; leaving the page
+      // in place also preserves the token result for the user.
     } catch {
       setTokenCheck({ valid: false, appId: null, message: "Could not reach the dashboard. Try again." });
     } finally {
