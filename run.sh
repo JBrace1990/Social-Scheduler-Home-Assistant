@@ -43,7 +43,10 @@ export CLOUDFLARED_PATH=/app/data/bin/cloudflared
 cd /app/dashboard
 npm start -- --hostname 127.0.0.1 --port 3000 &
 dashboard_pid=$!
-python3 -m worker.run >> /data/logs/worker.log 2>&1 &
+(
+  cd /app
+  exec python3 -m worker.run
+) >> /data/logs/worker.log 2>&1 &
 worker_pid=$!
 trap 'kill "$worker_pid" "$dashboard_pid" 2>/dev/null || true; wait || true' EXIT INT TERM
 nginx -g 'daemon off;'

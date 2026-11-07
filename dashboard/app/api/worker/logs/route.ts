@@ -14,7 +14,10 @@ async function tail(file: string, lines = 120): Promise<string> {
 }
 
 export async function GET() {
-  const logDir = path.join(config.repoRoot, "data", "logs");
+  // The HA add-on stores logs next to its persistent database under /data/logs.
+  // Using repoRoot/data/logs here pointed at /app/data/logs inside the container,
+  // which hid the actual worker startup traceback.
+  const logDir = path.join(path.dirname(config.databasePath), "logs");
   const body = [
     `Social Scheduler worker diagnostics — ${new Date().toISOString()}`,
     `Log directory: ${logDir}`,
