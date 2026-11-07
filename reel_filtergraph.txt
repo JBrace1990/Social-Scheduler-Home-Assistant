@@ -1,0 +1,16 @@
+[0:v]trim=duration=6,setpts=PTS-STARTPTS,scale=1080:1920:flags=lanczos,fps=30,setsar=1[v0];
+[1:v]trim=duration=4,setpts=PTS-STARTPTS,scale=1080:1920:flags=lanczos,fps=30,setsar=1[v1];
+[2:v]trim=duration=6,setpts=PTS-STARTPTS,scale=1080:1920:flags=lanczos,fps=30,setsar=1[v2];
+[v0][v1][v2]concat=n=3:v=1:a=0,fps=30,tpad=stop_mode=clone:stop_duration=0.2,trim=duration=16,setpts=PTS-STARTPTS[base];
+[base]drawtext=fontfile='Montserrat-ExtraBold.ttf':text='THE DAY CAN WAIT.':fontcolor=FFF8EB:fontsize=64:borderw=1:bordercolor=2A1A12@0.60:shadowcolor=2A1A12@0.75:shadowx=2:shadowy=3:x=(w-text_w)/2:y=220:enable='between(t,0,2.5)',drawtext=fontfile='Montserrat-ExtraBold.ttf':text='COFFEE FIRST.':fontcolor=FFF8EB:fontsize=64:borderw=1:bordercolor=2A1A12@0.60:shadowcolor=2A1A12@0.75:shadowx=2:shadowy=3:x=(w-text_w)/2:y=220:enable='between(t,2.5,6)',drawtext=fontfile='Montserrat-ExtraBold.ttf':text='POUR. SIP. REPEAT.':fontcolor=FFF8EB:fontsize=64:borderw=1:bordercolor=2A1A12@0.60:shadowcolor=2A1A12@0.75:shadowx=2:shadowy=3:x=(w-text_w)/2:y=220:enable='between(t,6,10)',drawtext=fontfile='Montserrat-ExtraBold.ttf':text='BREW BUDDIES TEE':fontcolor=FFF8EB:fontsize=58:borderw=1:bordercolor=2A1A12@0.60:shadowcolor=2A1A12@0.75:shadowx=2:shadowy=3:x=(w-text_w)/2:y=220:enable='between(t,10,12)',drawbox=x=iw-700:y=1610:w=660:h=90:color=B86A45@0.95:t=fill:enable='between(t,12,15.99)',drawtext=fontfile='Montserrat-SemiBold.ttf':text='SHOP MANY WORLDS | $18':fontcolor=FFF8EB:fontsize=40:x=w-700+(660-text_w)/2:y=1632:enable='between(t,12,15.99)'[vout];
+[0:a]atrim=duration=6,asetpts=PTS-STARTPTS,aresample=48000,volume=1.8[a0];
+[1:a]atrim=duration=4,asetpts=PTS-STARTPTS,aresample=48000,volume=1.8[a1];
+[2:a]atrim=duration=6,asetpts=PTS-STARTPTS,aresample=48000,volume=1.8[a2];
+[a0][a1][a2]concat=n=3:v=0:a=1[amb];
+[3:a]atrim=duration=16,aresample=48000,volume=0.30,afade=t=in:st=0:d=0.35,afade=t=out:st=15.15:d=0.85[mus];
+[4:a]aresample=48000,volume=1.0,adelay=250|250[vo1];
+[5:a]aresample=48000,atempo=1.15,volume=1.0,adelay=6200|6200[vo2];
+[6:a]aresample=48000,volume=1.0,adelay=10300|10300[vo3];
+[vo1][vo2][vo3]amix=inputs=3:duration=longest:normalize=0,alimiter=limit=0.95[voice];
+[mus][voice]sidechaincompress=threshold=0.02:ratio=5:attack=15:release=250:makeup=1.0[duckedmusic];
+[amb][duckedmusic][voice]amix=inputs=3:duration=first:normalize=0,alimiter=limit=0.95,loudnorm=I=-16:TP=-1.5:LRA=10,aresample=48000[aout]

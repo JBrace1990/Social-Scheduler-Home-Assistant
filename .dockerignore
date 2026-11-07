@@ -1,0 +1,13 @@
+.git
+.env
+.venv
+**/node_modules
+**/.next
+data
+**/__pycache__
+*.db
+*.db-wal
+*.db-shm
+*.sqlite*
+*.mp4
+*.mp3

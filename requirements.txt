@@ -1,0 +1,19 @@
+# Worker runtime dependencies. Install into a venv:
+#   python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+requests>=2.32
+# CA bundle. Already arrives with requests, but worker/cloudflared_setup.py imports it
+# directly to verify TLS when downloading cloudflared — python.org's macOS Python trusts
+# nothing until you run its separate "Install Certificates" step. Declared so that direct
+# use is intentional rather than an accident of requests' dependency tree.
+certifi>=2024.2.2
+# Export: writing the multi-tab .xlsx workbook (pure Python, no system libraries).
+openpyxl>=3.1
+# Timezone database for Python's zoneinfo. macOS/Linux read the OS's copy; Windows
+# ships none, so without this the worker's scheduling and the export's local-time
+# columns silently fall back to UTC there. Unused (but harmless) on macOS/Linux.
+tzdata>=2024.1
+# Bundles an ffmpeg binary (~31 MB wheel) so a Windows install can convert iPhone video
+# without the owner hunting one down. Windows only: macOS ships /usr/bin/avconvert, which
+# the dashboard prefers, so a Mac clone downloads nothing. Copied into data/bin by
+# worker/ffmpeg_setup.py.
+imageio-ffmpeg>=0.6; sys_platform == "win32"

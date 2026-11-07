@@ -1,0 +1,42 @@
+name: Social Scheduler
+version: "0.1.0"
+slug: social_scheduler
+description: Self-hosted social media scheduler dashboard and publishing worker
+url: https://github.com/Liparoto/Social-Scheduler
+arch:
+  - amd64
+  - aarch64
+  - armv7
+  - armhf
+  - i386
+startup: application
+boot: auto
+init: false
+ingress: true
+ingress_port: 3939
+panel_icon: mdi:calendar-clock
+panel_title: Social Scheduler
+map:
+  - data:rw
+options:
+  dry_run: true
+  kill_switch: false
+  default_timezone: Asia/Manila
+  meta_app_id: ""
+  meta_app_secret: ""
+  meta_graph_base: https://graph.facebook.com
+  meta_graph_version: v25.0
+  public_asset_base_url: ""
+  tiktok_client_key: ""
+  tiktok_client_secret: ""
+schema:
+  dry_run: bool
+  kill_switch: bool
+  default_timezone: str
+  meta_app_id: str
+  meta_app_secret: password
+  meta_graph_base: str
+  meta_graph_version: str
+  public_asset_base_url: str
+  tiktok_client_key: str
+  tiktok_client_secret: password
