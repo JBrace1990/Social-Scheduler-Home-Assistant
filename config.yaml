@@ -2,7 +2,7 @@ name: Social Scheduler
 version: "0.1.0"
 slug: social_scheduler
 description: Self-hosted social media scheduler dashboard and publishing worker
-url: https://github.com/Liparoto/Social-Scheduler
+url: https://github.com/JBrace1990/Social-Scheduler-Home-Assistant
 arch:
   - amd64
   - aarch64
