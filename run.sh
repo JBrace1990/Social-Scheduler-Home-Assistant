@@ -25,6 +25,10 @@ set_if_configured tiktok_client_secret TIKTOK_CLIENT_SECRET
 export VIDEO_CONVERTER=ffmpeg
 
 cd /app
+if [ -f /share/socialscheduler-migration.tar ] && [ ! -f /data/.migration-imported ]; then
+  bashio::log.info "Found /share/socialscheduler-migration.tar; importing Home Assistant share archive"
+  cp /share/socialscheduler-migration.tar /data/socialscheduler-migration.tar
+fi
 if [ -f /data/socialscheduler-migration.tar ]; then
   python3 scripts/import_ha_data.py /data/socialscheduler-migration.tar
 fi

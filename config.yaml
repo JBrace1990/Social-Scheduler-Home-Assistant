@@ -1,5 +1,5 @@
 name: Social Scheduler
-version: "0.1.4"
+version: "0.1.5"
 slug: social_scheduler
 description: Self-hosted social media scheduler dashboard and publishing worker
 url: https://github.com/JBrace1990/Social-Scheduler-Home-Assistant
@@ -18,6 +18,7 @@ panel_icon: mdi:calendar-clock
 panel_title: Social Scheduler
 map:
   - data:rw
+  - share:rw
 options:
   dry_run: true
   kill_switch: false
