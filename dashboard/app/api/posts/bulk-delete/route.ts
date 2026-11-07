@@ -5,7 +5,9 @@ export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
-  const ids = Array.isArray(body.post_ids) ? [...new Set(body.post_ids.map(Number))] : [];
+  const ids: number[] = Array.isArray(body.post_ids)
+    ? [...new Set((body.post_ids as unknown[]).map((value) => Number(value)))]
+    : [];
   if (!ids.length || ids.some((id) => !Number.isInteger(id))) return NextResponse.json({ error: "Select at least one post." }, { status: 400 });
   for (const id of ids) {
     const post = getPost(id);
