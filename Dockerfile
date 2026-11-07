@@ -1,7 +1,7 @@
 ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:latest
 FROM ${BUILD_FROM}
 
-RUN apk add --no-cache nodejs npm python3 py3-pip ffmpeg curl bash nginx
+RUN apk add --no-cache nodejs npm python3 python3-dev py3-pip ffmpeg curl bash nginx build-base
 
 WORKDIR /app
 COPY . /app
