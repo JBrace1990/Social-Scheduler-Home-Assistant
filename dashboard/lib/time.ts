@@ -47,12 +47,18 @@ export function splitInTz(iso: string | null, timeZone: string): { date: string;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return { date: "", time: "" };
   try {
-    const date = new Intl.DateTimeFormat("en-CA", {
+    const dateParts = new Intl.DateTimeFormat("en-CA", {
       timeZone,
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-    }).format(d); // en-CA -> YYYY-MM-DD
+    }).formatToParts(d);
+    // Do not rely on en-CA's output string being ISO shaped. Node/Alpine ICU builds
+    // have returned locale punctuation here, which made todayInTz() return an invalid
+    // calendar date and crashed CalendarView while formatting its range title.
+    const value = (type: Intl.DateTimeFormatPartTypes) =>
+      dateParts.find((part) => part.type === type)?.value ?? "";
+    const date = `${value("year")}-${value("month")}-${value("day")}`;
     const time = new Intl.DateTimeFormat("en-GB", {
       timeZone,
       hour: "2-digit",

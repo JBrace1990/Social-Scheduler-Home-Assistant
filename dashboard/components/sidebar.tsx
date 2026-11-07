@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeControls } from "@/components/theme-controls";
 import { UpdateBanner } from "@/components/update-banner";
@@ -57,7 +56,7 @@ export function Sidebar() {
                 : pathname.startsWith(item.href);
             return (
               <li key={item.href}>
-                <Link
+                <a
                   href={item.href}
                   className={`block rounded-lg px-3 py-2 transition-colors ${
                     active
@@ -67,7 +66,7 @@ export function Sidebar() {
                 >
                   <span className="block text-sm font-medium">{item.label}</span>
                   <span className="block text-[11px] text-muted">{item.hint}</span>
-                </Link>
+                </a>
               </li>
             );
           })}

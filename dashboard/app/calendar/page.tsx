@@ -31,7 +31,10 @@ export default async function CalendarPage({
   const view = params.view === "week" ? "week" : "month";
   const account = params.account ?? "all";
   const platform = params.platform ?? "all";
-  const today = todayInTz(config.defaultTimezone);
+  const zonedToday = todayInTz(config.defaultTimezone);
+  // Keep a broken or unsupported timezone value from turning the entire calendar into
+  // an invalid date (which later reaches Intl.DateTimeFormat in the client component).
+  const today = isValidDate(zonedToday) ? zonedToday : new Date().toISOString().slice(0, 10);
   // A malformed ?anchor= falls back to today rather than rendering an empty grid — the
   // value is user-editable in the address bar and reaches date maths directly.
   const anchor = isValidDate(params.anchor) ? params.anchor : today;
