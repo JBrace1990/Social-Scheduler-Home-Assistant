@@ -8,6 +8,7 @@
 !.env.example
 
 # Node / Next.js
+.tooling/
 node_modules/
 .next/
 out/
