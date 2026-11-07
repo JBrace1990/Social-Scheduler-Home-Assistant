@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     try { bytes = await fs.readFile(localPath); } catch { return NextResponse.json({ error: `Row ${i + 2}: local image was not found at ${localPath}.` }, { status: 422 }); }
     const filename = path.basename(localPath) || `csv-${i}.jpg`;
     const mime = filename.toLowerCase().endsWith(".png") ? "image/png" : filename.toLowerCase().endsWith(".webp") ? "image/webp" : "image/jpeg";
-    const form = new FormData(); form.append("file", new File([bytes], filename, { type: mime }));
+    const form = new FormData(); form.append("file", new File([new Uint8Array(bytes)], filename, { type: mime }));
     const uploaded = await fetch(new URL("/api/assets/upload", req.url), { method: "POST", body: form });
     const body = await uploaded.json().catch(() => ({}));
     if (!uploaded.ok) return NextResponse.json({ error: `Row ${i + 2}: ${body.error ?? "image upload failed"}` }, { status: uploaded.status });
