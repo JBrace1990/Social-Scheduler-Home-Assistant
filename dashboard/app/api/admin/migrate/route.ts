@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   if (req.headers.get("content-type")?.split(";")[0] !== "application/x-tar") {
     return NextResponse.json({ error: "Content-Type must be application/x-tar." }, { status: 415 });
   }
-  const temp = path.join("/share", `.socialscheduler-migration-${randomUUID()}.tmp`);
+  const temp = path.join("/data", `.socialscheduler-migration-${randomUUID()}.tmp`);
   let size = 0;
   try {
     const file = await open(temp, "wx", 0o600);
