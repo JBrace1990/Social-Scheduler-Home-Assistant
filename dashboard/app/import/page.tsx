@@ -2,6 +2,7 @@ import { getChannels, listPeriods, listTags } from "@/lib/queries";
 import { BulkImport } from "@/components/bulk-import";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export default function ImportPage() {
   return (
